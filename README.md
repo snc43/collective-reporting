@@ -1,7 +1,6 @@
 # collective-reporting
-git clone https://github.com/jhipster/jhipster-console.git
+git clone https://github.com/snc43/collective-reporting 
 
-cd jhipster-console
+cd collective-reporting
 docker-compose -f ./docker-compose.yml build
-
-docker images
+docker-compose up
