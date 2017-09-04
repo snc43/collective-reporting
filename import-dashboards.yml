@@ -1,0 +1,6 @@
+version: '2'
+services:
+    dashboards:
+        build: dashboards/
+        environment:
+            - ELASTICSEARCH_URL=http://$ELASTICSEARCH_HOST:$ELASTICSEARCH_PORT

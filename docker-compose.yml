@@ -1,0 +1,42 @@
+version: '2'
+services:
+    # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+    elasticsearch:
+        build: elasticsearch/
+        ports:
+            - "9200:9200"
+#        environment:
+#            - http.host=0.0.0.0
+#            - transport.host=127.0.0.1
+        # Uncomment this section to have elasticsearch data loaded from a volume
+        #volumes:
+        #   - ./log-data:/usr/share/elasticsearch/data
+    logstash:
+        build: logstash/
+        environment:
+            - INPUT_TCP_PORT=5000
+            - INPUT_UDP_PORT=5000
+            - ELASTICSEARCH_HOST=elasticsearch
+            - ELASTICSEARCH_PORT=9200
+            - LOGSTASH_DEBUG=true
+        ports:
+            - "5000:5000"
+            - "9600:9600"
+        depends_on:
+            - elasticsearch
+
+    kibana:
+        build: kibana/
+        environment:
+            - ELASTICSEARCH_URL=http://elasticsearch:9200
+        ports:
+            - "5601:5601"
+        depends_on:
+            - elasticsearch
+
+    dashboards:
+        build: dashboards/
+        environment:
+            - ELASTICSEARCH_URL=http://elasticsearch:9200
+        depends_on:
+            - elasticsearch
